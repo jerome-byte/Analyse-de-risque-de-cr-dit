@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scoring Crédit - Évaluation du Risque de Défaut</title>
+    <link rel="stylesheet" href="/static/css/style.css?v=2">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<!-- HEADER  -->
+<header class="app-header">
+    <div class="header-left">
+        <div class="logo">
+            <i class="fas fa-university"></i>
+        </div>
+        <div>
+            <h1>Scoring Crédit</h1>
+            <p class="subtitle">Évaluation du risque de défaut - UEMOA</p>
+        </div>
+    </div>
+    <div class="header-right">
+        <div class="status-badge" id="api-status">
+            <span class="status-dot"></span>
+            <span>API en ligne</span>
+        </div>
+    </div>
+</header>
+
+<!-- MAIN CONTAINER -->
+<main class="container">
+
+    <!-- TABS -->
+    <nav class="tabs">
+        <button class="tab-btn active" data-tab="tab-single">
+            <i class="fas fa-user"></i> Prédiction individuelle
+        </button>
+        <button class="tab-btn" data-tab="tab-csv">
+            <i class="fas fa-file-csv"></i> Import CSV (Batch)
+        </button>
+        <button class="tab-btn" data-tab="tab-model">
+            <i class="fas fa-brain"></i> Informations du modèle
+        </button>
+        <button class="tab-btn" data-tab="tab-help">
+            <i class="fas fa-circle-question"></i> Aide
+        </button>
+    </nav>
+
+  
+    <!-- TAB 1 : PRÉDICTION INDIVIDUELLE                    -->
+    
+    <section class="tab-content active" id="tab-single">
+        <div class="grid-2">
+            <!-- Formulaire -->
+            <div class="card">
+                <div class="card-header">
+                    <h2><i class="fas fa-pen-to-square"></i> Caractéristiques de la demande</h2>
+                    <p class="card-subtitle">Renseignez les informations de l'emprunteur</p>
+                </div>
+                <form id="form-single" class="form-grid">
+                    <div class="form-group">
+                        <label for="nom_client">Nom du client</label>
+                        <input type="text" id="nom_client" placeholder="ex: CLIENT_001" value="CLIENT_001">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age">Âge <span class="range">(22-65 ans)</span></label>
+                        <input type="number" id="age" min="22" max="65" value="35" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="revenu_mensuel">Revenu mensuel (FCFA)</label>
+                        <input type="number" id="revenu_mensuel" min="50000" max="500000" value="250000" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="montant_pret">Montant du prêt (FCFA)</label>
+                        <input type="number" id="montant_pret" min="500000" max="50000000" value="15000000" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="duree_pret_mois">Durée (mois)</label>
+                        <input type="number" id="duree_pret_mois" min="6" max="120" value="60" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="taux_interet">Taux d'intérêt (%)</label>
+                        <input type="number" id="taux_interet" step="0.1" min="3" max="15" value="8.5" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nb_emprunts_anterieurs">Emprunts antérieurs</label>
+                        <input type="number" id="nb_emprunts_anterieurs" min="0" max="5" value="2" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="score_historique">Score historique <span class="range">(300-850)</span></label>
+                        <input type="number" id="score_historique" min="300" max="850" value="650" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="situation_familiale">Situation familiale</label>
+                        <select id="situation_familiale" required>
+                            <option value="célibataire">Célibataire</option>
+                            <option value="marié" selected>Marié(e)</option>
+                            <option value="divorcé">Divorcé(e)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="secteur_activite">Secteur d'activité</label>
+                        <select id="secteur_activite" required>
+                            <option value="agriculture">Agriculture</option>
+                            <option value="commerce" selected>Commerce</option>
+                            <option value="services">Services</option>
+                            <option value="industrie">Industrie</option>
+                            <option value="btp">BTP</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="garantie">Garantie</label>
+                        <select id="garantie" required>
+                            <option value="oui" selected>Oui</option>
+                            <option value="non">Non</option>
+                        </select>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary" id="btn-predict">
+                            <i class="fas fa-magnifying-glass-chart"></i>
+                            Évaluer le risque
+                        </button>
+                        <button type="button" class="btn btn-secondary" id="btn-reset">
+                            <i class="fas fa-rotate-left"></i>
+                            Réinitialiser
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Résultat -->
+            <div class="card result-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-chart-line"></i> Résultat de l'évaluation</h2>
+                </div>
+                <div id="result-single" class="result-content">
+                    <div class="empty-state">
+                        <i class="fas fa-inbox"></i>
+                        <p>Remplissez le formulaire et cliquez sur <strong>Évaluer le risque</strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+   
+    <!-- TAB 2 : IMPORT CSV                                 -->
+    
+    <section class="tab-content" id="tab-csv">
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-file-csv"></i> Import d'un fichier CSV</h2>
+                <p class="card-subtitle">
+                    Uploadez un fichier CSV contenant les informations de plusieurs clients
+                    pour obtenir leurs prédictions en une seule fois (max 1000 lignes).
+                </p>
+            </div>
+
+            <div class="csv-actions">
+                <a href="/template/csv" class="btn btn-secondary" download>
+                    <i class="fas fa-download"></i> Télécharger le template CSV
+                </a>
+                <span class="or-separator">ou</span>
+                <label for="csv-file" class="btn btn-primary file-btn">
+                    <i class="fas fa-upload"></i> Choisir un fichier CSV
+                    <input type="file" id="csv-file" accept=".csv" hidden>
+                </label>
+            </div>
+
+            <div id="csv-filename" class="csv-filename"></div>
+
+            <div id="csv-result" class="csv-result"></div>
+        </div>
+    </section>
+
+    
+    <!-- TAB 3 : INFORMATIONS DU MODÈLE                     -->
+    
+    <section class="tab-content" id="tab-model">
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-brain"></i> Informations du modèle</h2>
+                <p class="card-subtitle">Détails techniques et performances</p>
+            </div>
+            <div id="model-info" class="model-info">
+                <div class="loading"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>
+            </div>
+        </div>
+    </section>
+
+   
+    <!-- TAB 4 : AIDE                                       -->
+   
+    <section class="tab-content" id="tab-help">
+        <div class="card">
+            <div class="card-header">
+                <h2><i class="fas fa-circle-question"></i> Aide & Documentation</h2>
+            </div>
+
+            <div class="help-section">
+                <h3><i class="fas fa-list"></i> Colonnes attendues dans le CSV</h3>
+                <table class="help-table">
+                    <thead>
+                        <tr>
+                            <th>Colonne</th>
+                            <th>Type</th>
+                            <th>Plage / Valeurs</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><code>nom_client</code></td><td>Texte</td><td>libre</td><td>Identifiant du client (optionnel)</td></tr>
+                        <tr><td><code>age</code></td><td>Entier</td><td>22 - 65</td><td>Âge de l'emprunteur</td></tr>
+                        <tr><td><code>revenu_mensuel</code></td><td>Entier</td><td>50 000 - 500 000</td><td>Revenu mensuel en FCFA</td></tr>
+                        <tr><td><code>montant_pret</code></td><td>Entier</td><td>500 000 - 50 000 000</td><td>Montant du prêt en FCFA</td></tr>
+                        <tr><td><code>duree_pret_mois</code></td><td>Entier</td><td>6 - 120</td><td>Durée en mois</td></tr>
+                        <tr><td><code>taux_interet</code></td><td>Décimal</td><td>3 - 15</td><td>Taux annuel en %</td></tr>
+                        <tr><td><code>nb_emprunts_anterieurs</code></td><td>Entier</td><td>0 - 5</td><td>Nombre d'emprunts passés</td></tr>
+                        <tr><td><code>score_historique</code></td><td>Entier</td><td>300 - 850</td><td>Score de crédit</td></tr>
+                        <tr><td><code>situation_familiale</code></td><td>Texte</td><td>célibataire / marié / divorcé</td><td>Situation familiale</td></tr>
+                        <tr><td><code>secteur_activite</code></td><td>Texte</td><td>agriculture / commerce / services / industrie / btp</td><td>Secteur</td></tr>
+                        <tr><td><code>garantie</code></td><td>Texte</td><td>oui / non</td><td>Présence d'une garantie</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="help-section">
+                <h3><i class="fas fa-lightbulb"></i> Comment interpréter les résultats ?</h3>
+                <ul class="help-list">
+                    <li><strong>Bon client (défaut = 0)</strong> : probabilité de défaut faible le prêt peut être accordé.</li>
+                    <li><strong>Mauvais client (défaut = 1)</strong> : probabilité de défaut élevée  le prêt doit être refusé ou renégocié.</li>
+                    <li><strong>Niveau de risque</strong> :
+                        <ul>
+                            <li><span class="badge badge-green">Faible</span> : probabilité &lt; 30 %</li>
+                            <li><span class="badge badge-orange">Moyen</span> : 30 % ≤ probabilité &lt; 60 %</li>
+                            <li><span class="badge badge-red">Élevé</span> : probabilité ≥ 60 %</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="help-section">
+                <h3><i class="fas fa-code"></i> Utilisation de l'API</h3>
+                <p>L'API REST est également disponible :</p>
+                <ul class="help-list">
+                    <li><code>GET /health</code> État de l'API</li>
+                    <li><code>GET /model/info</code>  Informations du modèle</li>
+                    <li><code>POST /predict</code> Prédiction unitaire (JSON)</li>
+                    <li><code>POST /predict/batch</code> Prédiction multiple (JSON)</li>
+                    <li><code>POST /predict/csv</code> Prédiction depuis un CSV</li>
+                    <li><code>GET /docs</code>  Documentation Swagger interactive</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="app-footer">
+    <p>© 2025 - AKOTA Yao Jérôme | Projet Scoring Crédit | UEMOA</p>
+</footer>
+
+<script src="/static/js/app.js?v=2"></script>
+</body>
+</html>

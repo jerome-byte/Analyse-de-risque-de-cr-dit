@@ -1,0 +1,75 @@
+{
+  "feature_names": [
+    "age",
+    "revenu_mensuel",
+    "montant_pret",
+    "duree_pret_mois",
+    "taux_interet",
+    "nb_emprunts_anterieurs",
+    "ratio_endettement",
+    "score_historique",
+    "situation_familiale_divorcé",
+    "situation_familiale_marié",
+    "secteur_activite_btp",
+    "secteur_activite_commerce",
+    "secteur_activite_industrie",
+    "secteur_activite_services",
+    "garantie_oui"
+  ],
+  "numerical_cols": [
+    "age",
+    "revenu_mensuel",
+    "montant_pret",
+    "duree_pret_mois",
+    "taux_interet",
+    "nb_emprunts_anterieurs",
+    "ratio_endettement",
+    "score_historique"
+  ],
+  "dummy_cols": [
+    "situation_familiale_divorcé",
+    "situation_familiale_marié",
+    "secteur_activite_btp",
+    "secteur_activite_commerce",
+    "secteur_activite_industrie",
+    "secteur_activite_services",
+    "garantie_oui"
+  ],
+  "categorical_info": {
+    "situation_familiale": [
+      "célibataire",
+      "divorcé",
+      "marié"
+    ],
+    "secteur_activite": [
+      "agriculture",
+      "btp",
+      "commerce",
+      "industrie",
+      "services"
+    ],
+    "garantie": [
+      "non",
+      "oui"
+    ]
+  },
+  "original_numerical_cols": [
+    "age",
+    "revenu_mensuel",
+    "montant_pret",
+    "duree_pret_mois",
+    "taux_interet",
+    "nb_emprunts_anterieurs",
+    "ratio_endettement",
+    "score_historique"
+  ],
+  "metrics": {
+    "model": "LogisticRegression",
+    "accuracy": 0.915,
+    "precision": 0.8837209302325582,
+    "recall": 0.76,
+    "f1_score": 0.8172043010752689,
+    "auc": 0.9721333333333333
+  },
+  "version": "1.0.0"
+}

@@ -1,0 +1,13 @@
+
+
+# Dépendances pour l'API Scoring Crédit
+
+fastapi
+uvicorn[standard]
+pydantic
+joblib
+numpy
+pandas
+scikit-learn
+python-multipart
+jinja2
