@@ -1,9 +1,11 @@
-# Modèle de Scoring Crédit — Prédiction du Risque de Défaut
+# Modèle de Scoring Crédit  Prédiction du Risque de Défaut
 
 **Auteur :** AKOTA Yao Jérôme
 
 Projet de Data Science / Machine Learning appliqué au contexte bancaire ouest-africain .
 Consultez les images de l'API et du modèle en ligne dans le dossier docs, ou accédez directement à l'interface via le lien indiqué dans le README pour tester l'envoi de fichiers CSV au modèle et observer les réponses.
+Ce projet est hébergé sur Render. En raison des limitations de l'offre gratuite, le service se met en veille après 15 minutes d'inactivité ; la première requête peut donc prendre quelques secondes pour redémarrer l'application.
+https://analyse-de-risque-de-cr-dit.onrender.com 
 
 ---
 
