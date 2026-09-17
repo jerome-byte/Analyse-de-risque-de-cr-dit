@@ -70,8 +70,3 @@ pip install pandas numpy matplotlib seaborn scikit-learn
 
 > Note : le chemin de sauvegarde du CSV dans le notebook est codé en dur pour Windows (`C:\Users\...`). Pensez à l'adapter à votre environnement avant d'exécuter cette cellule.
 
-## Limites
-
-- Données synthétiques (ne reflètent pas parfaitement un portefeuille réel de la BOAD).
-- Pas de validation croisée (k-folds).
-- Modèle à ré-entraîner régulièrement dans un cas réel.
